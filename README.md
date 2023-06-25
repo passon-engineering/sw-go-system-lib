@@ -1,6 +1,6 @@
 # Utility Package
 
-The `utility` package provides two functions for common utility tasks.
+The `utility` package provides functions for common utility tasks.
 ## Usage
 
 1. In your project, open a terminal or command prompt and navigate to the root directory of your Go project.
@@ -14,7 +14,7 @@ The `utility` package provides two functions for common utility tasks.
 
 4. In your Go code, you can import the package using the import path you identified earlier. For example:
    ```go
-   import "github.com/example/mypackage"
+   import "github.com/passon-engineering/sw-go-utility-lib"
    ```
 
 5. You can now use the functions, types, and other elements provided by the external package in your own code.
