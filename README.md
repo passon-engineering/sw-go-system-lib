@@ -19,5 +19,6 @@ The `utility` package provides functions for common utility tasks.
 
 5. You can now use the functions, types, and other elements provided by the external package in your own code.
 
-
+## Contributing
+Contributions to the logger package are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
 
