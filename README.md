@@ -1,6 +1,6 @@
 # Utility Package
 
-The `utility` package provides functions for common utility tasks.
+The `utility` package provides functions for common utility tasks such as networking, system and other.
 ## Usage
 
 1. In your project, open a terminal or command prompt and navigate to the root directory of your Go project.
