@@ -6,7 +6,23 @@ import (
 	"os/exec"
 )
 
-// RunCommandGetOutput executes the specified command in a shell and returns its output.
+/*
+RunCommandGetOutput runs a command in a shell and captures its output.
+
+It executes the specified command using the shell, reads its stdout pipe,
+and returns the output as a byte slice. Any error that occurred during
+command execution or output retrieval is returned.
+
+Parameters:
+  - command: string - the command to be executed
+
+Returns:
+  - []byte: the output of the command
+  - error: an error if any occurred during command execution or output retrieval
+
+Example usage:
+  output, err := RunCommandGetOutput("ls -l")
+*/
 func RunCommandGetOutput(command string) ([]byte, error) {
 	cmd := exec.Command("bash", "-c", command)
 

@@ -6,9 +6,24 @@ import (
 	"time"
 )
 
-// GetNetworkExternalIP attempts to retrieve the external IP address.
-// It iterates through network interfaces and returns the first non-loopback IPv4 address found.
-// It tries for a maximum of 5 attempts with a 5-second delay between each attempt.
+/*
+GetNetworkExternalIP retrieves the external IP address of the machine.
+
+It iterates through the network interfaces, excluding loopback interfaces
+and those that are down. For each valid interface, it retrieves the IP addresses
+and returns the first non-loopback IPv4 address found.
+
+The function makes multiple attempts with a retry delay in case the IP address
+cannot be retrieved immediately. If the maximum number of attempts is reached
+without success, it returns an error.
+
+Returns:
+  - string: the external IP address
+  - error: an error if the IP address retrieval fails
+
+Example usage:
+  ip, err := GetNetworkExternalIP()
+*/
 func GetNetworkExternalIP() (string, error) {
 	const maxAttempts = 5
 	const retryDelay = 5 * time.Second
@@ -62,7 +77,24 @@ func GetNetworkExternalIP() (string, error) {
 
 
 
-// isValidIPv4 checks whether the given string is a valid IPv4 address.
+/*
+IsValidIPv4 checks if the given IP address is a valid IPv4 address.
+
+It uses the net.ParseIP function to parse the IP address string. If the parsed
+IP address is nil, it indicates that the IP address is invalid and the function
+returns false. If the parsed IP address is not nil but does not represent an
+IPv4 address, the function also returns false. Otherwise, it considers the
+IP address as a valid IPv4 address and returns true.
+
+Parameters:
+  - ip: string - the IP address to validate
+
+Returns:
+  - bool: true if the IP address is a valid IPv4 address, false otherwise
+
+Example usage:
+  isValid := IsValidIPv4("192.168.0.1")
+*/
 func IsValidIPv4(ip string) bool {
 	if parsedIP := net.ParseIP(ip); parsedIP == nil {
 		// Invalid IPv4 address
