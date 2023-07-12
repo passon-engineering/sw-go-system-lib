@@ -1,0 +1,10 @@
+# .gitignore
+
+# Ignore all directories named 'test'
+**/test/
+
+# Or if your test directories have a specific pattern, like 'testdir', you can do
+**/testdir*/
+
+# Ignore all 'tmp' directories which might be used for temporary test files
+**/tmp/

@@ -13,14 +13,15 @@ import (
 // command execution or output retrieval is returned.
 //
 // Parameters:
-//  - command: string - the command to be executed
+//   - command: string - the command to be executed
 //
 // Returns:
-//  - []byte: the output of the command
-//  - error: an error if any occurred during command execution or output retrieval
+//   - []byte: the output of the command
+//   - error: an error if any occurred during command execution or output retrieval
 //
 // Example usage:
-//  output, err := RunCommandGetOutput("ls -l")
+//
+//	output, err := RunCommandGetOutput("ls -l")
 func RunCommandGetOutput(command string) ([]byte, error) {
 	cmd := exec.Command("bash", "-c", command)
 
@@ -47,9 +48,6 @@ func RunCommandGetOutput(command string) ([]byte, error) {
 	return result, nil
 }
 
-
-
-
 // Checks if a command exists on the system.
 //
 // It attempts to execute the specified command with the "-v" flag, which outputs
@@ -57,22 +55,23 @@ func RunCommandGetOutput(command string) ([]byte, error) {
 // it returns true. Otherwise, it returns false.
 //
 // Parameters:
-// 	- command: string - the command to check
-// 
+//   - command: string - the command to check
+//
 // Returns:
-//	- bool: true if the command exists, false otherwise
-//	- error: an error if any occurred during command execution
-// 
+//   - bool: true if the command exists, false otherwise
+//   - error: an error if any occurred during command execution
+//
 // Example usage:
-//  exists, err := CommandExists("ls")
-//  if err != nil {
-//    // handle error
-//  }
-//  if exists {
-//    fmt.Println("ls command exists!")
-//  } else {
-//    fmt.Println("ls command does not exist!")
-//  }
+//
+//	exists, err := CommandExists("ls")
+//	if err != nil {
+//	  // handle error
+//	}
+//	if exists {
+//	  fmt.Println("ls command exists!")
+//	} else {
+//	  fmt.Println("ls command does not exist!")
+//	}
 func CommandExists(command string) (bool, error) {
 	cmd := exec.Command("command", "-v", command)
 	err := cmd.Run()

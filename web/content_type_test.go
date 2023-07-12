@@ -4,8 +4,8 @@ import "testing"
 
 func TestGetContentType(t *testing.T) {
 	tests := []struct {
-		path          string
-		expectedType  string
+		path         string
+		expectedType string
 	}{
 		{path: "styles.css", expectedType: "text/css"},
 		{path: "script.js", expectedType: "application/javascript"},
@@ -14,7 +14,7 @@ func TestGetContentType(t *testing.T) {
 		{path: "picture.jpeg", expectedType: "image/jpeg"},
 		{path: "photo.jpg", expectedType: "image/jpeg"},
 		{path: "animation.gif", expectedType: "image/gif"},
-		{path: "data.json", expectedType: "application/json"},	
+		{path: "data.json", expectedType: "application/json"},
 		{path: "unknown.xyz", expectedType: ""},
 	}
 
@@ -22,6 +22,6 @@ func TestGetContentType(t *testing.T) {
 		contentType := GetContentType(test.path)
 		if contentType != test.expectedType && test.expectedType != "" {
 			t.Errorf("For path %s, expected content type %s, but got %s", test.path, test.expectedType, contentType)
-		}		
+		}
 	}
 }

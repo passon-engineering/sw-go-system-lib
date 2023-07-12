@@ -14,7 +14,7 @@ var mimeTypes = map[string]string{
 	".jpeg": "image/jpeg",
 	".jpg":  "image/jpeg",
 	".gif":  "image/gif",
-	".json":   "application/json",
+	".json": "application/json",
 }
 
 // Returns the MIME type based on the file extension.
@@ -25,10 +25,10 @@ var mimeTypes = map[string]string{
 // content type dynamically based on the file's content.
 //
 // Parameters:
-//  - path: string - the path to the file
+//   - path: string - the path to the file
 //
 // Returns:
-//  - string: the MIME type of the file
+//   - string: the MIME type of the file
 func GetContentType(path string) string {
 	extension := strings.ToLower(filepath.Ext(path))
 	if mimeType, ok := mimeTypes[extension]; ok {

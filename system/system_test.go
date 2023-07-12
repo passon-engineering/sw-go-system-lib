@@ -10,8 +10,6 @@ func TestFunctions(t *testing.T) {
 	testRunCommandExist(t)
 }
 
-
-
 func testRunCommandGetOutput(t *testing.T) {
 	output, err := RunCommandGetOutput("echo 'Hello, World!'")
 	if err != nil {
@@ -34,7 +32,7 @@ func testRunCommandExist(t *testing.T) {
 		fmt.Printf("Error occurred while checking command existence: %v\n", err)
 	}
 
-	expected := true 
+	expected := true
 	if output != expected {
 		t.Errorf("Unexpected command output. Expected: %v, Got: %v", expected, output)
 	}

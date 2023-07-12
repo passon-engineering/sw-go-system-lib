@@ -17,11 +17,12 @@ import (
 // without success, it returns an error.
 //
 // Returns:
-//  - string: the external IP address
-//  - error: an error if the IP address retrieval fails
+//   - string: the external IP address
+//   - error: an error if the IP address retrieval fails
 //
 // Example usage:
-//  ip, err := GetNetworkExternalIP()
+//
+//	ip, err := GetNetworkExternalIP()
 func GetNetworkExternalIP() (string, error) {
 	const maxAttempts = 5
 	const retryDelay = 5 * time.Second
@@ -73,8 +74,6 @@ func GetNetworkExternalIP() (string, error) {
 	return "", errors.New("failed to retrieve external IP address")
 }
 
-
-
 // Checks if the given IP address is a valid IPv4 address.
 //
 // It uses the net.ParseIP function to parse the IP address string. If the parsed
@@ -84,13 +83,14 @@ func GetNetworkExternalIP() (string, error) {
 // IP address as a valid IPv4 address and returns true.
 //
 // Parameters:
-//  - ip: string - the IP address to validate
+//   - ip: string - the IP address to validate
 //
 // Returns:
-//  - bool: true if the IP address is a valid IPv4 address, false otherwise
+//   - bool: true if the IP address is a valid IPv4 address, false otherwise
 //
 // Example usage:
-//  isValid := IsValidIPv4("192.168.0.1")
+//
+//	isValid := IsValidIPv4("192.168.0.1")
 func IsValidIPv4(ip string) bool {
 	if parsedIP := net.ParseIP(ip); parsedIP == nil {
 		// Invalid IPv4 address
