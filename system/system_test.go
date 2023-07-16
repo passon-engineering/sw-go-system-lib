@@ -2,11 +2,13 @@ package system
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
 func TestFunctions(t *testing.T) {
 	testRunCommandGetOutput(t)
+	testRunCommand(t)
 	testRunCommandExist(t)
 }
 
@@ -18,6 +20,24 @@ func testRunCommandGetOutput(t *testing.T) {
 
 	expected := []byte("Hello, World!")
 	if string(output) != string(expected) {
+		t.Errorf("Unexpected command output. Expected: %s, Got: %s", expected, output)
+	}
+
+	// Print the command output for visual inspection
+	t.Logf("Command output: %s", output)
+}
+
+func testRunCommand(t *testing.T) {
+	output, err := RunCommand("echo 'Hello, World!'")
+	if err != nil {
+		t.Errorf("Failed to run command: %v", err)
+	}
+
+	// Trim any trailing newline or space
+	output = strings.TrimSpace(output)
+
+	expected := "Hello, World!"
+	if output != expected {
 		t.Errorf("Unexpected command output. Expected: %s, Got: %s", expected, output)
 	}
 
