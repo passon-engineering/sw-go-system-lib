@@ -1,7 +1,6 @@
 package file
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -34,7 +33,7 @@ import (
 //	}
 func DeleteAllExceptIgnored(directory string, ignore map[string]bool) error {
 	// Read the directory
-	files, err := ioutil.ReadDir(directory)
+	files, err := os.ReadDir(directory)
 	if err != nil {
 		return err
 	}
@@ -79,7 +78,7 @@ func DeleteAllExceptIgnored(directory string, ignore map[string]bool) error {
 //	}
 func DeleteAll(directory string) error {
 	// Read the directory
-	files, err := ioutil.ReadDir(directory)
+	files, err := os.ReadDir(directory)
 	if err != nil {
 		return err
 	}
@@ -123,4 +122,104 @@ func Delete(path string) error {
 		return err
 	}
 	return nil
+}
+
+// DirectoryStats holds the statistics about a directory,
+// including the total count of files, directories, and the total size.
+//
+// Fields:
+//   - FileCount: int - the total number of files
+//   - DirectoryCount: int - the total number of directories
+//   - TotalSize: int64 - the total size of files
+type DirectoryStats struct {
+	FileCount      int
+	DirectoryCount int
+	TotalSize      int64
+}
+
+// Returns the total size of files in bytes.
+func (ds *DirectoryStats) TotalSizeBytes() float64 {
+	return float64(ds.TotalSize)
+}
+
+// Returns the total size of files in kilobytes.
+func (ds *DirectoryStats) TotalSizeKB() float64 {
+	return float64(ds.TotalSize) / 1024
+}
+
+// Returns the total size of files in megabytes.
+func (ds *DirectoryStats) TotalSizeMB() float64 {
+	return float64(ds.TotalSize) / (1024 * 1024)
+}
+
+// Returns the total size of files in gigabytes.
+func (ds *DirectoryStats) TotalSizeGB() float64 {
+	return float64(ds.TotalSize) / (1024 * 1024 * 1024)
+}
+
+// Returns the total size of files in terabytes.
+func (ds *DirectoryStats) TotalSizeTB() float64 {
+	return float64(ds.TotalSize) / (1024 * 1024 * 1024 * 1024)
+}
+
+// Iteratively traverses the directory structure rooted at 'root',
+// counts the number of files and directories up to the specified 'maxDepth', and calculates
+// the total size of all files encountered. Directories and files at depths greater than 'maxDepth'
+// are ignored.
+//
+// Parameters:
+//   - root: string - the path to the root directory
+//   - maxDepth: int - the maximum depth to traverse
+//
+// Returns:
+//   - *DirectoryStats: if the traversal was successful, a pointer to a DirectoryStats struct
+//     containing the counts and total size. If the traversal was not successful, nil is returned.
+//   - error: if there was an error reading a directory or getting file information, the function
+//     returns this error. Otherwise, it returns nil.
+//
+// Example usage:
+//
+//	stats, err := countFilesAndFolders("/path/to/your/directory", 2)
+//	if err != nil {
+//	  fmt.Println("Error:", err)
+//	  return
+//	}
+//	fmt.Printf("Number of files: %d\n", stats.FileCount)
+//	fmt.Printf("Number of directories: %d\n", stats.DirectoryCount)
+//	fmt.Printf("Total size: %.2f bytes\n", stats.TotalSizeBytes())
+func CountFilesAndFolders(path string, maxDepth int) (DirectoryStats, error) {
+	stats := DirectoryStats{}
+
+	var walk func(string, int) error
+	walk = func(path string, depth int) error {
+		if depth > maxDepth {
+			return nil
+		}
+
+		entries, err := os.ReadDir(path)
+		if err != nil {
+			return err
+		}
+
+		for _, entry := range entries {
+			if entry.IsDir() {
+				stats.DirectoryCount++
+				err := walk(filepath.Join(path, entry.Name()), depth+1)
+				if err != nil {
+					return err
+				}
+			} else {
+				stats.FileCount++
+			}
+		}
+
+		return nil
+	}
+
+	err := walk(path, 0)
+	if err != nil {
+		return DirectoryStats{}, err
+	}
+
+	return stats, nil
 }

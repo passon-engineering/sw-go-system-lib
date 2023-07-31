@@ -76,3 +76,53 @@ func TestDelete(t *testing.T) {
 		t.Fatal("File should be deleted")
 	}
 }
+
+func TestCountFilesAndFolders(t *testing.T) {
+	// Setup a test directory with some files and directories
+	tmpDir, err := ioutil.TempDir("", "test-dir")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %s", err)
+	}
+	defer os.RemoveAll(tmpDir) // clean up
+
+	subDir := filepath.Join(tmpDir, "subdir")
+	err = os.Mkdir(subDir, 0755)
+	if err != nil {
+		t.Fatalf("Failed to create subdir: %s", err)
+	}
+
+	for _, f := range []string{"file1", "file2", filepath.Join("subdir", "file3")} {
+		err = ioutil.WriteFile(filepath.Join(tmpDir, f), []byte("test"), 0644)
+		if err != nil {
+			t.Fatalf("Failed to write file: %s", err)
+		}
+	}
+
+	// Test the function with maxDepth 0
+	stats, err := CountFilesAndFolders(tmpDir, 0)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err)
+	}
+	if stats.FileCount != 2 || stats.DirectoryCount != 1 {
+		t.Errorf("Expected FileCount and DirectoryCount to be 2 and 1, got %d and %d", stats.FileCount, stats.DirectoryCount)
+	}
+
+	// Test the function with maxDepth 1
+	stats, err = CountFilesAndFolders(tmpDir, 1)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err)
+	}
+	if stats.FileCount != 3 || stats.DirectoryCount != 1 {
+		t.Errorf("Expected FileCount and DirectoryCount to be 3 and 1, got %d and %d", stats.FileCount, stats.DirectoryCount)
+	}
+
+	// Test the function with maxDepth 2
+	stats, err = CountFilesAndFolders(tmpDir, 2)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err)
+	}
+	if stats.FileCount != 3 || stats.DirectoryCount != 1 {
+		t.Errorf("Expected FileCount and DirectoryCount to be 3 and 1, got %d and %d", stats.FileCount, stats.DirectoryCount)
+	}
+
+}
