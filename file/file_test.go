@@ -2,6 +2,7 @@ package file
 
 import (
 	"io/ioutil"
+	"math"
 	"os"
 	"path/filepath"
 	"testing"
@@ -118,6 +119,15 @@ func TestCountFilesAndFolders(t *testing.T) {
 
 	// Test the function with maxDepth 2
 	stats, err = CountFilesAndFolders(tmpDir, 2)
+	if err != nil {
+		t.Errorf("Unexpected error: %s", err)
+	}
+	if stats.FileCount != 3 || stats.DirectoryCount != 1 {
+		t.Errorf("Expected FileCount and DirectoryCount to be 3 and 1, got %d and %d", stats.FileCount, stats.DirectoryCount)
+	}
+
+	// Test the function with maxDepth math.MaxInt64
+	stats, err = CountFilesAndFolders(tmpDir, math.MaxInt64)
 	if err != nil {
 		t.Errorf("Unexpected error: %s", err)
 	}

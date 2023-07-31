@@ -169,7 +169,7 @@ func (ds *DirectoryStats) TotalSizeTB() float64 {
 //
 // Parameters:
 //   - root: string - the path to the root directory
-//   - maxDepth: int - the maximum depth to traverse
+//   - maxDepth: int64 - the maximum depth to traverse (set math.MaxInt64 if you want to have no limit)
 //
 // Returns:
 //   - *DirectoryStats: if the traversal was successful, a pointer to a DirectoryStats struct
@@ -187,11 +187,11 @@ func (ds *DirectoryStats) TotalSizeTB() float64 {
 //	fmt.Printf("Number of files: %d\n", stats.FileCount)
 //	fmt.Printf("Number of directories: %d\n", stats.DirectoryCount)
 //	fmt.Printf("Total size: %.2f bytes\n", stats.TotalSizeBytes())
-func CountFilesAndFolders(path string, maxDepth int) (DirectoryStats, error) {
+func CountFilesAndFolders(path string, maxDepth int64) (DirectoryStats, error) {
 	stats := DirectoryStats{}
 
-	var walk func(string, int) error
-	walk = func(path string, depth int) error {
+	var walk func(string, int64) error
+	walk = func(path string, depth int64) error {
 		if depth > maxDepth {
 			return nil
 		}
