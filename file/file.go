@@ -124,7 +124,7 @@ func Delete(path string) error {
 	return nil
 }
 
-// DirectoryStats holds the statistics about a directory,
+// Holds the statistics about a directory,
 // including the total count of files, directories, and the total size.
 //
 // Fields:
@@ -132,9 +132,9 @@ func Delete(path string) error {
 //   - DirectoryCount: int - the total number of directories
 //   - TotalSize: int64 - the total size of files
 type DirectoryStats struct {
-	FileCount      int
-	DirectoryCount int
-	TotalSize      int64
+	FileCount      int   `json:"file_count" bson:"file_count" yaml:"file_count"`
+	DirectoryCount int   `json:"directory_count" bson:"directory_count" yaml:"directory_count"`
+	TotalSize      int64 `json:"total_size" bson:"total_size" yaml:"total_size"`
 }
 
 // Returns the total size of files in bytes.
@@ -202,14 +202,20 @@ func CountFilesAndFolders(path string, maxDepth int64) (DirectoryStats, error) {
 		}
 
 		for _, entry := range entries {
+			entryPath := filepath.Join(path, entry.Name())
 			if entry.IsDir() {
 				stats.DirectoryCount++
-				err := walk(filepath.Join(path, entry.Name()), depth+1)
+				err := walk(entryPath, depth+1)
 				if err != nil {
 					return err
 				}
 			} else {
 				stats.FileCount++
+				fileInfo, err := os.Stat(entryPath)
+				if err != nil {
+					return err
+				}
+				stats.TotalSize += fileInfo.Size()
 			}
 		}
 
